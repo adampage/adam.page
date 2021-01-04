@@ -1,0 +1,19 @@
+# Operating system
+*.swp
+.cache
+.DS_Store
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Environment
+.env
+
+# Node.js
+npm-debug.*
+node_modules
+
+# Built project files
+/dist

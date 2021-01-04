@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "name": "adam.page",
+  "description": "Personal website of Adam Page",
+  "author": {
+    "name": "Adam Page",
+    "email": "adamfpage@gmail.com",
+    "url": "https://adam.page"
+  },
+  "license": "CC BY-NC-SA 4.0",
+  "scripts": {
+    "start": "npx eleventy --serve"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1"
+  }
+}
