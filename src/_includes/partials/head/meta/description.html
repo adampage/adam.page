@@ -1,6 +1,8 @@
 {% if head.meta.description %}
-  {% set description = head.meta.description|striptags %}
-  <meta name="description" content="{{ description }}" />
-  <meta name="twitter:description" content="{{ description }}" />
-  <meta property="og:description" content="{{ description }}" />
+  {% set description = head.meta.description | striptags %}
+{% else %}
+  {% set description = site.defaults.page.meta.description | striptags %}
 {% endif %}
+<meta name="description" content="{{ description }}" />
+<meta name="twitter:description" content="{{ description }}" />
+<meta property="og:description" content="{{ description }}" />

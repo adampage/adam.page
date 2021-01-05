@@ -1,1 +1,6 @@
-<title>{{ head.title | striptags }} | {{ site.domain }}</title>
+{% if head.title %}
+  {% set title = head.title + ' — ' + site.name %}
+{% else %}
+  {% set title = site.defaults.page.title %}
+{% endif %}
+<title>{{ title | striptags }}</title>
