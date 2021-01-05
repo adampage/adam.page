@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="x-ua-compatible" content="ie=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ head.title | striptags }} | {{ siteinfo.domain }}</title>
-    {% if head.meta.description %}
-      <meta name="description" content="{{ head.meta.description | striptags }}" />
-    {% endif %}
-    <meta name="theme-color" content="#e7eeee" />
+    {% include 'partials/head/meta/top.html'  %}
+    {% include 'partials/head/title.html'  %}
+    {% include 'partials/head/meta/description.html'  %}
     {# <!-- TODO: There must be a better way to render conditional  --> #}
     {# <!-- template markup per environment.  --> #}
     {% if env.node_env === 'production' %}
       <link rel="canonical" href="https://{{ siteinfo.domain }}/">
       <link rel="manifest" href="/manifest.webmanifest" />
     {% endif %}
-    <link rel="icon" href="/assets/images/icons/favicon.svg?v1" type="image/svg+xml" />
-    <link rel="mask-icon" href="/assets/images/icons/favicon-mask-icon.svg" color="#446060" />
-    <link rel="apple-touch-icon" href="/assets/images/icons/favicon-apple-touch-icon.png" />
+    {% include 'partials/head/theme.html'  %}
+    {% include 'partials/head/icons.html'  %}
   </head>
   <body>
     <main>
