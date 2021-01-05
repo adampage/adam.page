@@ -22,6 +22,7 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.11.1",
+    "@11ty/eleventy-plugin-inclusive-language": "^1.0.0",
     "eleventy-plugin-pwa": "^1.0.8",
     "html-minifier": "^4.0.0",
     "js-yaml": "^4.0.0",

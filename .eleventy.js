@@ -1,5 +1,6 @@
 // Plugins
 const pluginPWA = require('eleventy-plugin-pwa');
+const inclusiveLangPlugin = require("@11ty/eleventy-plugin-inclusive-language");
 
 // Transforms
 const htmlMinTransform = require('./src/transforms/html-min-transform.js');
@@ -28,8 +29,14 @@ module.exports = config => {
   });
   config.setLibrary("md", markdownLibrary);
 
-  // Add yaml support for data files
+  // Add yaml support for data files.
   config.addDataExtension("yaml", contents => yaml.load(contents));
+
+  // Check for inclusive language.
+  config.addPlugin(inclusiveLangPlugin, {
+    templateFormats: ["md","html"],
+    words: "crazy,insane,lame,simply,obviously,basically,of course,clearly,just,everyone knows,however,easy"
+  });
 
   // If in the production environment
   if (isProduction) {
