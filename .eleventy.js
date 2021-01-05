@@ -4,8 +4,12 @@ const pluginPWA = require('eleventy-plugin-pwa');
 // Transforms
 const htmlMinTransform = require('./src/transforms/html-min-transform.js');
 
+// Libraries
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
+
+// Data extensions
+const yaml = require("js-yaml");
 
 // Create a helpful production flag
 const isProduction = process.env.NODE_ENV === 'production';
@@ -23,6 +27,9 @@ module.exports = config => {
     level: 1
   });
   config.setLibrary("md", markdownLibrary);
+
+  // Add yaml support for data files
+  config.addDataExtension("yaml", contents => yaml.load(contents));
 
   // If in the production environment
   if (isProduction) {

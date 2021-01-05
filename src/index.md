@@ -11,8 +11,8 @@ head:
       developer in Portland, Oregon, USA.
 ---
 
-adam.page is currently in development.  Until it launches, please head over
-to [adampage.net](http://adampage.net) instead.
+{{ siteinfo.domain }} is currently in development.  Until it launches, please
+head over to [adampage.net](http://adampage.net) instead.
 
 ## Contact
 

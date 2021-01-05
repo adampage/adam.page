@@ -4,13 +4,15 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ head.title | striptags }} | adam.page</title>
-    <meta name="description" content="{{ head.meta.description | striptags }}" />
+    <title>{{ head.title | striptags }} | {{ siteinfo.domain }}</title>
+    {% if head.meta.description %}
+      <meta name="description" content="{{ head.meta.description | striptags }}" />
+    {% endif %}
     <meta name="theme-color" content="#e7eeee" />
     {# <!-- TODO: There must be a better way to render conditional  --> #}
     {# <!-- template markup per environment.  --> #}
     {% if env.node_env === 'production' %}
-      <link rel="canonical" href="https://adam.page/">
+      <link rel="canonical" href="https://{{ siteinfo.domain }}/">
       <link rel="manifest" href="/manifest.webmanifest" />
     {% endif %}
     <link rel="icon" href="/assets/images/icons/favicon.svg?v1" type="image/svg+xml" />
@@ -22,7 +24,7 @@
       {% block content %}{% endblock %}
     </main>
     {% if env.node_env === 'production' %}
-      <script async defer data-domain="adam.page" src="https://analytics.adam.page/js/plausible.js"></script>
+      <script async defer data-domain="{{ siteinfo.domain }}" src="https://analytics.{{ siteinfo.domain }}/js/plausible.js"></script>
       <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
