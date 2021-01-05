@@ -1,0 +1,5 @@
+# Prevent directory browsing
+Options -Indexes
+
+# Serve custom error pages
+ErrorDocument 404 /404/
