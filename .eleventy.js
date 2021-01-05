@@ -6,6 +6,9 @@ const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = config => {
 
+  // Pass images through to build folder.
+  config.addPassthroughCopy('./src/assets/');
+
   // If in the production environment
   if (isProduction) {
 
