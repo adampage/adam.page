@@ -9,11 +9,12 @@
   },
   "license": "CC BY-NC-SA 4.0",
   "scripts": {
-    "start": "npx eleventy --serve",
+    "start": "NODE_ENV=local npx eleventy --serve",
     "build": "NODE_ENV=production npx eleventy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.11.1",
+    "eleventy-plugin-pwa": "^1.0.8",
     "html-minifier": "^4.0.0"
   }
 }

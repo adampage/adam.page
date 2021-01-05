@@ -1,3 +1,6 @@
+// Plugins
+const pluginPWA = require('eleventy-plugin-pwa');
+
 // Transforms
 const htmlMinTransform = require('./src/transforms/html-min-transform.js');
 
@@ -14,6 +17,10 @@ module.exports = config => {
 
     // Minify HTML
     config.addTransform('htmlmin', htmlMinTransform);
+
+    // Configure progressive web app.
+    config.addPlugin(pluginPWA);
+    config.addPassthroughCopy('./src/manifest.webmanifest');
   }
 
   return {

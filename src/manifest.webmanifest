@@ -1,0 +1,23 @@
+{
+  "name": "adam.page",
+  "short_name": "adam.page",
+  "icons": [
+    {
+      "src": "/assets/images/icons/favicon-android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/icons/favicon-android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "background_color": "#e7eeee",
+  "theme_color": "#e7eeee",
+  "display": "minimal-ui"
+}
