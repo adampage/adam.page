@@ -1,7 +1,7 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-<h1>{{ heading }}</h1>
+<h1>{{ heading | safe }}</h1>
 <article>
   {{ content | safe }}
 </article>
