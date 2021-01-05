@@ -7,7 +7,15 @@
     "email": "adamfpage@gmail.com",
     "url": "https://adam.page"
   },
-  "license": "CC BY-NC-SA 4.0",
+  "license": "CC-BY-NC-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adampage/adam.page.git"
+  },
+  "bugs": {
+    "url": "https://github.com/adampage/adam.page/issues",
+    "email": "adamfpage@gmail.com"
+  },
   "scripts": {
     "start": "NODE_ENV=local npx eleventy --serve",
     "build": "NODE_ENV=production npx eleventy"
