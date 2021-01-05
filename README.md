@@ -26,15 +26,24 @@ Scratch](https://piccalil.li/course/learn-eleventy-from-scratch/).
 2. Navigate into its root directory.
 3. Run `npm install`.
 
-### Running the website
+### Running the website dynamically
 
 1. Run `npm start`.
-2. Note the “Access URLs” that are output and view any of them in your web
+    * Note: `npm start` is an alias for `npm run start`.
+2. Review the “Access URLs” in the output and view any of them in your web
    browser.
     * On the computer that is running the project, view the running website at
       [http://localhost:8080](http://localhost:8080).
     * On any device that is connected to the same local network, view the
       running website at the URL labeled “External”.
+
+### Building the static website
+
+1. Run `npm run build`.
+2. The static files of the completed build will appear in the `dist` directory
+   at the root.
+   * All static HTML files in the build will have automatically been
+     [minified](https://en.wikipedia.org/wiki/Minification_(programming)).
 
 ## License
 
