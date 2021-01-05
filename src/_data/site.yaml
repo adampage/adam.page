@@ -8,3 +8,7 @@ defaults:
       description: |
         Adam Page is an accessibility-focused user experience designer and
         frontend developer in Portland, Oregon USA.
+theme:
+  colors:
+    background: '#e7eeee'
+    icon: '#446060'
