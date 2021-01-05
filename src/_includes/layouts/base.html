@@ -22,6 +22,7 @@
       {% block content %}{% endblock %}
     </main>
     {% if env.node_env === 'production' %}
+      <script async defer data-domain="adam.page" src="https://analytics.adam.page/js/plausible.js"></script>
       <script>
         if ('serviceWorker' in navigator) {
           window.addEventListener('load', () => {
