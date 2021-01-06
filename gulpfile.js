@@ -13,4 +13,3 @@ exports.watch = watcher;
 
 // For the default `gulp` command, run each task in parallel.
 exports.default = parallel(sass);
-

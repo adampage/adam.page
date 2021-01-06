@@ -8,23 +8,18 @@ sassProcessor.compiler = require('sass');
 // Create a helpful production flag.
 const isProduction = process.env.NODE_ENV === 'production';
 
-// Identify all source Sass files containing critical styles for inlining,
-// either global or page-specific.
-const criticalStyles = ['critical.scss'];
-
 // Take the arguments passed in from Gulp’s `dest()` method and determine where
 // its output file should go.
 const calculateOutput = ({history}) => {
 
   // By default, we’ll assume the CSS file should be loaded as its own request.
-  let response = './dist/assets/css';
+  let response = './dist/assets';
 
-  // Isolate the source filename.
-  const sourceFileName = /[^/]*$/.exec(history[0])[0];
-
-  // If the source filename has been identified as crtitical, then compile
+  // If the source filename has been identified as critical, then compile
   // it into `src/_includes` so that templates can inline it with <style>.
-  if (criticalStyles.includes(sourceFileName)) {
+  const isCritical = history[0].includes('/critical/');
+
+  if (isCritical) {
     response = './src/_includes/css';
   }
 
@@ -33,7 +28,7 @@ const calculateOutput = ({history}) => {
 
 // Process every source Sass file and caculate their output.
 const sass = () => {
-  return src('./src/assets/scss/*.scss')
+  return src('./src/assets/scss/{critical,stylesheets}/*.scss')
     .pipe(sassProcessor().on('error', sassProcessor.logError))
     .pipe(
       cleanCSS(

@@ -1,0 +1,9 @@
+.pixel-scene {
+  svg {
+    transition: transform 0.5s ease;
+
+    &:hover {
+      transform: scale(1.2);
+    }
+  }
+}
