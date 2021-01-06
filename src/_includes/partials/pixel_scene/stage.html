@@ -1,0 +1,35 @@
+{% set scene = pixel_scenes.my_face %}
+{% set scale = scene.info.scale %}
+{% set width = scene.info.stage.width * scale %}
+{% set height = scene.info.stage.height * scale %}
+
+<figure style="margin-inline-start: 0;">
+  <svg
+    width="{{ width }}"
+    height="{{ height }}"
+    viewbox="0 0 {{ width }} {{ height }}"
+    xmlns="http://www.w3.org/2000/svg"
+    shape-rendering="crispEdges"
+  >
+    <title>{{ scene.info.name }}</title>
+    {% for sprite_slug, sprite in scene.sprites %}
+      {% set frame = sprite.frames[sprite.info.initial_frame] %}
+      {% set matrix = frame.matrix %}
+      {% for row in matrix %}
+        {% set y = loop.index - 1 %}
+        <g class="row">
+          {% for color in row %}
+            {% set x = loop.index - 1 %}
+            <rect
+              fill="{{ color }}"
+              x="{{ (x + sprite.info.origin.x) * scale }}"
+              y="{{ (y + sprite.info.origin.y) * scale }}"
+              width="{{ scale }}"
+              height="{{ scale }}"
+            />
+          {% endfor %}
+        </g>
+      {% endfor %}
+    {% endfor %}
+  </svg>
+</figure>

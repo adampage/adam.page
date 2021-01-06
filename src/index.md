@@ -1,6 +1,6 @@
 ---
 layout: 'layouts/simple.html'
-heading: Hi, stranger
+heading: Hi, friend
 ---
 
 {{ site.domain }} is currently in development.  Until it launches, please
