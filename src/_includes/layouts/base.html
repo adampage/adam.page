@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     {% include 'partials/head/meta/top.html'  %}
     {% include 'partials/head/title.html'  %}
@@ -13,6 +13,7 @@
     {% include 'partials/head/theme.html'  %}
     {% include 'partials/head/icons.html'  %}
     <style>{% include "css/critical.css" %}</style>
+    <script>document.documentElement.classList.remove('no-js');</script>
   </head>
   <body>
     <main>
