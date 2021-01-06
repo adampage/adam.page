@@ -12,13 +12,13 @@ const markdownItAnchor = require("markdown-it-anchor");
 // Data extensions
 const yaml = require("js-yaml");
 
-// Create a helpful production flag
+// Create a helpful production flag.
 const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = config => {
 
-  // Pass images through to build folder.
-  config.addPassthroughCopy('./src/assets/');
+  // Pass static assets through to build folder.
+  config.addPassthroughCopy('./src/assets/static/', './src/assets/');
 
   // Markdown overrides.
   let markdownLibrary = markdownIt({
@@ -38,7 +38,7 @@ module.exports = config => {
     words: "crazy,insane,lame,simply,obviously,basically,of course,clearly,just,everyone knows,however,easy"
   });
 
-  // If in the production environment
+  // If building for the production environment...
   if (isProduction) {
 
     // Minify HTML
@@ -51,6 +51,10 @@ module.exports = config => {
     // Passthrough .htaccess Apache configuration.
     config.addPassthroughCopy('./src/.htaccess');
   }
+
+  // Configure 11ty to use the .eleventyignore instead of .gitignore to enable
+  // inlining of compiled critical.css.
+  config.setUseGitIgnore(false);
 
   return {
     markdownTemplateEngine: 'njk',

@@ -17,16 +17,21 @@
     "email": "adamfpage@gmail.com"
   },
   "scripts": {
-    "start": "NODE_ENV=local npx eleventy --serve",
-    "build": "NODE_ENV=production npx eleventy"
+    "start": "npx gulp && concurrently \"npx gulp watch\" \"npx eleventy --serve\"",
+    "build": "NODE_ENV=production npx gulp && NODE_ENV=production npx eleventy"
   },
   "devDependencies": {
     "@11ty/eleventy": "^0.11.1",
     "@11ty/eleventy-plugin-inclusive-language": "^1.0.0",
+    "concurrently": "^5.3.0",
     "eleventy-plugin-pwa": "^1.0.8",
+    "gulp": "^4.0.2",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-sass": "^4.1.0",
     "html-minifier": "^4.0.0",
     "js-yaml": "^4.0.0",
     "markdown-it": "^12.0.4",
-    "markdown-it-anchor": "^7.0.0"
+    "markdown-it-anchor": "^7.0.0",
+    "sass": "^1.32.0"
   }
 }
