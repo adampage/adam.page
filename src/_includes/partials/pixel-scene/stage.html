@@ -1,4 +1,4 @@
-{% set scene = pixel_scenes.my_face %}
+{% set scene = artwork.pixelScenes.myFace %}
 {% set scale = scene.info.scale %}
 {% set width = scene.info.stage.width * scale %}
 {% set height = scene.info.stage.height * scale %}
@@ -12,8 +12,8 @@
     shape-rendering="crispEdges"
   >
     <title>{{ scene.info.name }}</title>
-    {% for sprite_slug, sprite in scene.sprites %}
-      {% set frame = sprite.frames[sprite.info.initial_frame] %}
+    {% for slugSprite, sprite in scene.sprites %}
+      {% set frame = sprite.frames[sprite.info.initialFrame] %}
       {% set matrix = frame.matrix %}
       {% for row in matrix %}
         {% set y = loop.index - 1 %}

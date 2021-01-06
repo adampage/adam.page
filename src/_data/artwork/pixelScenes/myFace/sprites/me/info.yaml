@@ -1,5 +1,5 @@
 name: My face
-initial_frame: 'eyes_open'
+initialFrame: eyesOpen
 size:
   width: 30
   height: 39

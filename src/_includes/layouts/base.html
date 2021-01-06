@@ -6,7 +6,7 @@
     {% include 'partials/head/meta/description.html'  %}
     {# <!-- TODO: There must be a better way to render conditional  --> #}
     {# <!-- template markup per environment.  --> #}
-    {% if env.node_env === 'production' %}
+    {% if env.nodeEnv === 'production' %}
       <link rel="canonical" href="https://{{ site.domain }}/">
       <link rel="manifest" href="/manifest.webmanifest" />
     {% endif %}
@@ -18,7 +18,7 @@
     <main>
       {% block content %}{% endblock %}
     </main>
-    {% if env.node_env === 'production' %}
+    {% if env.nodeEnv === 'production' %}
       <script async defer data-domain="{{ site.domain }}" src="https://analytics.{{ site.domain }}/js/plausible.js"></script>
       {% if analytics %}
         <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
