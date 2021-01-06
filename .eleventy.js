@@ -18,7 +18,7 @@ const isProduction = process.env.NODE_ENV === 'production';
 module.exports = config => {
 
   // Pass static assets through to build folder.
-  config.addPassthroughCopy('./src/assets/static/', './src/assets/');
+  config.addPassthroughCopy({'src/assets/static': 'assets'});
 
   // Markdown overrides.
   let markdownLibrary = markdownIt({
