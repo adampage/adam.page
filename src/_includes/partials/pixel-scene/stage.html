@@ -1,35 +1,84 @@
 {% set scene = artwork.pixelScenes.myFace %}
-{% set scale = scene.info.scale %}
-{% set width = scene.info.stage.width * scale %}
-{% set height = scene.info.stage.height * scale %}
+{% set pixelSize = scene.info.pixelSize %}
+{% set width = scene.info.stage.width * pixelSize %}
+{% set height = scene.info.stage.height * pixelSize %}
 
-<figure>
-  <svg
-    width="{{ width }}"
-    height="{{ height }}"
-    viewbox="0 0 {{ width }} {{ height }}"
-    xmlns="http://www.w3.org/2000/svg"
-    shape-rendering="crispEdges"
-  >
-    <title>{{ scene.info.name }}</title>
-    {% for slugSprite, sprite in scene.sprites %}
-      {% set frame = sprite.frames[sprite.info.initialFrame] %}
-      {% set matrix = frame.matrix %}
-      {% for row in matrix %}
-        {% set y = loop.index - 1 %}
-        <g class="row">
-          {% for color in row %}
-            {% set x = loop.index - 1 %}
-            <rect
-              fill="{{ color }}"
-              x="{{ (x + sprite.info.origin.x) * scale }}"
-              y="{{ (y + sprite.info.origin.y) * scale }}"
-              width="{{ scale }}"
-              height="{{ scale }}"
-            />
-          {% endfor %}
-        </g>
-      {% endfor %}
-    {% endfor %}
-  </svg>
+{# <!-- TODO: Generate initial frame as static SVG and pass to dist. --> #}
+{# <!-- TODO: Or commit all frames as static SVGs and generate matrices? --> #}
+
+<figure class="[ pixel-scene ] [ when-js ]">
+  <noscript>
+    {# <!-- TODO: Serve pixel scene as static svg via img element. --> #}
+  </noscript>
 </figure>
+
+<script>
+  const xmlns = 'http://www.w3.org/2000/svg';
+  const pixelScene = document.querySelector('.pixel-scene');
+  const pSize = {{ pixelSize }};
+
+  // Create svg element.
+  let svgElem = document.createElementNS(xmlns, "svg");
+  let svgChildren = [];
+  svgElem.setAttributeNS(null, 'width', '{{ width }}');
+  svgElem.setAttributeNS(null, 'height', '{{ height }}');
+  svgElem.setAttributeNS(null, 'viewbox', '0 0 {{ width }} {{ height }}');
+  svgElem.setAttributeNS(null, 'shape-rendering', 'crispEdges');
+
+  // Create svg’s title element.
+  let titleElem = document.createElementNS(xmlns, "title");
+  titleElem.textContent = '{{ scene.info.name }}';
+  svgChildren.push(titleElem);
+
+  // Process scene sprites.
+  let sprite = { info: {}, initialFrame: {}};
+
+  {% for slugSprite, sprite in scene.sprites %}
+    {% set initialFrame = sprite.frames[sprite.info.initialFrame] %}
+
+    sprite.info = {{ sprite.info | dump | safe }};
+    sprite.initialFrame = {{ initialFrame | dump | safe }};
+
+    // TODO: non-opaque, non-animating pixels should be converted to null in
+    // matrix and forego <rect> generation.
+
+    sprite.initialFrame.matrix.forEach((row, y) => {
+
+      // Create an svg group element to contain a row of sprite pixels.
+      let rowElem = document.createElementNS(xmlns, "g");
+      rowElem.classList.add('row');
+
+      row.forEach((color, x) => {
+
+        // Calculate pixel’s position on the scene stage.
+        let pX = (x + sprite.info.origin.x) * pSize;
+        let pY = (y + sprite.info.origin.y) * pSize;
+
+        // Create a rect element to represent a colored sprite pixel.
+        let p = document.createElementNS(xmlns, "rect");
+        p.setAttributeNS(null, 'fill', color);
+        p.setAttributeNS(null, 'x', pX);
+        p.setAttributeNS(null, 'y', pY);
+        p.setAttributeNS(null, 'width', pSize);
+        p.setAttributeNS(null, 'height', pSize);
+
+        // Add this pixel to the row.
+        rowElem.appendChild(p);
+
+      });
+
+      // Add row to svg children elements.
+      svgChildren.push(rowElem);
+    });
+
+  {% endfor %}
+
+  // Append svg’s children elements.
+  svgChildren.forEach(child => {
+    svgElem.appendChild(child);
+  });
+
+  // Append svg to pixel scene parent element.
+  pixelScene.append(svgElem);
+
+</script>

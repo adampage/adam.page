@@ -2,4 +2,4 @@ name: Me, hastily pixelated
 stage:
   width: 30
   height: 39
-scale: 4
+pixelSize: 4
