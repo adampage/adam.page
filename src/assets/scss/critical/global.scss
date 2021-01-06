@@ -1,4 +1,20 @@
 @import 'reset';
 
 // Import utilities.
+@import '../utilities/wrapper';
 @import '../utilities/when-js';
+
+body {
+  font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 1.25rem;
+  line-height: 1.5;
+}
+
+main {
+  padding: 1.5rem 0;
+}
+
+.wrapper > * + *,
+article > * + * {
+  margin-top: 1.5rem;
+}
