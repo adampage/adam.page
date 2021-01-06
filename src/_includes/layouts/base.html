@@ -2,56 +2,26 @@
 <!DOCTYPE html>
 <html lang="en" class="no-js">
   <head>
-    {% include 'partials/head/meta/top.html'  %}
-    {% include 'partials/head/title.html'  %}
-    {% include 'partials/head/meta/description.html'  %}
-    {# <!-- TODO: There must be a better way to render conditional  --> #}
-    {# <!-- template markup per environment.  --> #}
-    {% if env.nodeEnv === 'production' %}
+    {% include 'partials/head/meta/top.html' %}
+    {% include 'partials/head/title.html' %}
+    {% include 'partials/head/meta/description.html' %}
+    {% if env.isProduction %}
       <link rel="canonical" href="https://{{ site.domain }}/">
       <link rel="manifest" href="/manifest.webmanifest" />
     {% endif %}
-    {% include 'partials/head/theme.html'  %}
-    {% include 'partials/head/icons.html'  %}
-    <style>{% include "css/critical/global.css" %}</style>
-
-    {% if pageCriticalStyles %}
-      {% for item in pageCriticalStyles %}
-        <style>{% include item %}</style>
-      {% endfor %}
-    {% endif %}
-
-    {% if pageStylesheets %}
-      {% for item in pageStylesheets %}
-        <link rel="stylesheet" media="print" href="{{ item }}?{{ assetHash }}" onload="this.media='all'" />
-      {% endfor %}
-    {% endif %}
-
+    {% include 'partials/head/theme.html' %}
+    {% include 'partials/head/icons.html' %}
+    {% include 'partials/head/styles/critical.html' %}
+    {% include 'partials/head/styles/deferred.html' %}
     <script>document.documentElement.classList.remove('no-js');</script>
   </head>
   <body>
     <main>
       {% block content %}{% endblock %}
     </main>
-    {% if env.nodeEnv === 'production' %}
-      <script async defer data-domain="{{ site.domain }}" src="https://analytics.{{ site.domain }}/js/plausible.js"></script>
-      {% if analytics %}
-        <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
-        <script>
-          plausible("{{ analytics.goal }}",{ props: {
-            {%- for name, value in analytics.props -%}
-              {{ name }}: {{ value }}{% if not loop.last %},{% endif %}
-            {%- endfor -%}
-          }});
-        </script>
-      {% endif %}
-      <script>
-        if ('serviceWorker' in navigator) {
-          window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/service-worker.js');
-          });
-        }
-      </script>
+    {% if env.isProduction %}
+      {% include 'partials/body/analytics.html' %}
+      {% include 'partials/body/service-worker.html' %}
     {% endif %}
   </body>
 </html>

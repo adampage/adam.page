@@ -1,0 +1,11 @@
+<script async defer data-domain="{{ site.domain }}" src="https://analytics.{{ site.domain }}/js/plausible.js"></script>
+{% if analytics %}
+  <script>window.plausible = window.plausible || function() { (window.plausible.q = window.plausible.q || []).push(arguments) }</script>
+  <script>
+    plausible("{{ analytics.goal }}",{ props: {
+      {%- for name, value in analytics.props -%}
+        {{ name }}: {{ value }}{% if not loop.last %},{% endif %}
+      {%- endfor -%}
+    }});
+  </script>
+{% endif %}
