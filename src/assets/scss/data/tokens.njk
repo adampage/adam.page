@@ -4,11 +4,11 @@ permalinkBypassOutputDir: true
 ---
 
 $tokens: (
-  {% for property, values in tokens %}
+  {%- for property, values in tokens %}
   '{{ property }}': (
-    {% for name, value in values %}
+    {%- for name, value in values %}
       '{{ name }}': '{{ value | safe }}',
-    {% endfor %}
+    {%- endfor %}
   ),
-  {% endfor %}
+  {%- endfor %}
 );
