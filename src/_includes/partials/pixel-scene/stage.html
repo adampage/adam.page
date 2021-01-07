@@ -16,10 +16,9 @@
 </figure>
 
 <script>
-  {% for token, colorValue in dictByToken %}
-    const {{ token }} = "{{ colorValue }}";
-  {%- endfor %}
-
+  const {% for token, colorValue in dictByToken -%}
+    {{ token }}="{{ colorValue }}"{% if not loop.last %},{% endif %}
+  {%- endfor -%};
   const xmlns = 'http://www.w3.org/2000/svg';
   const pixelScene = document.querySelector('.pixel-scene');
   const pSize = {{ pixelSize }};
@@ -40,8 +39,8 @@
   // Process scene sprites.
   let sprite = { info: {}, initialFrame: {}};
 
-  {% for slugSprite, sprite in scene.sprites %}
-    {% set initialFrame = sprite.frames[sprite.info.initialFrame] %}
+  {%- for slugSprite, sprite in scene.sprites -%}
+    {%- set initialFrame = sprite.frames[sprite.info.initialFrame] %}
 
     sprite.info = {{ sprite.info | dump | safe }};
 
@@ -84,7 +83,7 @@
       svgChildren.push(rowElem);
     });
 
-  {% endfor %}
+  {%- endfor %}
 
   // Append svg’s children elements.
   svgChildren.forEach(child => {
