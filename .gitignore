@@ -18,3 +18,4 @@ node_modules
 # Built project files
 /dist
 /src/_includes/css
+/src/assets/scss/data/*.scss

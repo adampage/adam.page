@@ -5,7 +5,16 @@ const sass = require('./gulp-tasks/sass.js');
 
 // Define a method to watch source Sass files and run configured tasks.
 const watcher = () => {
-  watch('./src/assets/scss/**/*.scss', {ignoreInitial: true}, sass);
+  watch(
+    [
+      './src/assets/scss/**/*.scss',
+      '!./src/assets/scss/data/*.scss'
+    ],
+    {
+      ignoreInitial: true
+    },
+    sass
+  );
 };
 
 // Connect the watcher metehod to a Gulp `watch` task.

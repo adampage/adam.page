@@ -1,0 +1,14 @@
+---
+permalink: 'src/assets/scss/data/tokens.scss'
+permalinkBypassOutputDir: true
+---
+
+$tokens: (
+  {% for property, values in tokens %}
+  '{{ property }}': (
+    {% for name, value in values %}
+      '{{ name }}': '{{ value | safe }}',
+    {% endfor %}
+  ),
+  {% endfor %}
+);
