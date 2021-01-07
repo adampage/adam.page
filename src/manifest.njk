@@ -1,6 +1,12 @@
+---
+
+permalink: manifest.webmanifest
+
+---
+
 {
-  "name": "adam.page",
-  "short_name": "adam.page",
+  "name": "{{ site.name }}",
+  "short_name": "{{ site.domain }}",
   "icons": [
     {
       "src": "/assets/images/icons/favicon-android-chrome-192x192.png",
@@ -17,7 +23,7 @@
   ],
   "start_url": "/",
   "scope": "/",
-  "background_color": "#e7eeee",
-  "theme_color": "#e7eeee",
+  "background_color": "{{ tokens.colors.background }}",
+  "theme_color": "{{ tokens.colors.icon }}",
   "display": "minimal-ui"
 }

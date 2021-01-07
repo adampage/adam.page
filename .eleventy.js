@@ -46,7 +46,6 @@ module.exports = config => {
 
     // Configure progressive web app.
     config.addPlugin(pluginPWA);
-    config.addPassthroughCopy('./src/manifest.webmanifest');
 
     // Passthrough .htaccess Apache configuration.
     config.addPassthroughCopy('./src/.htaccess');
