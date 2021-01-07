@@ -1,4 +1,6 @@
-const globalHelpers = require('../../global.js');
+const globalHelpers = require('../../globalHelpers.js');
+
+console.log(global);
 
 module.exports = {
   mapUniqueSceneColors(scene, keyPrefix = 'c') {
