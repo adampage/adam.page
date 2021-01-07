@@ -1,5 +1,6 @@
 {% set scene = artwork.pixelScenes.scenes.myFace %}
 {% set maps = artwork.pixelScenes.helpers.mapUniqueSceneColors(scene) %}
+{# {% set spriteMatrices = artwork.pixelScenes.helpers.getSpriteMatrices(scene) %} #}
 {% set dictByToken = maps[0] %}
 {% set dictByColor = maps[1] %}
 {% set pixelSize = scene.info.pixelSize %}
@@ -16,7 +17,7 @@
 </figure>
 
 <script>
-  const {% for token, colorValue in dictByToken -%}
+  const {% for token, colorValue in dictByToken %}
     {{ token }}="{{ colorValue }}"{% if not loop.last %},{% endif %}
   {%- endfor -%};
   const xmlns = 'http://www.w3.org/2000/svg';
@@ -36,24 +37,39 @@
   titleElem.textContent = '{{ scene.info.name }}';
   svgChildren.push(titleElem);
 
-  // Process scene sprites.
-  let sprite = { info: {}, initialFrame: {}};
+  // Create empty dictionary for sprites
+  let sprites = {};
 
+  // Collect sprite data.
   {%- for slugSprite, sprite in scene.sprites -%}
-    {%- set initialFrame = sprite.frames[sprite.info.initialFrame] %}
 
-    sprite.info = {{ sprite.info | dump | safe }};
+    {% set initialFrame = sprite.frames[sprite.info.initialFrame] %}
+
+    sprites['{{slugSprite}}'] = {};
+
+    sprites['{{slugSprite}}'].info = {{ sprite.info | dump | safe }};
+
 
     // TODO: non-opaque, non-animating pixels should be converted to null in
     // matrix and forego <rect> generation.
-    sprite.initialFrame = {
+    sprites['{{slugSprite}}'].initialFrame = {
       "name": "{{ initialFrame.name }}",
+
+      // "spriteMatrix": [
+      //   {%- for row in spriteMatrix %}
+      //     [ {% for pixelToken in row %}{{ pixelToken }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
+      //   {%- endfor %}
+      // ]
+
       "matrix": [
-        {%- for row in initialFrame.matrix %}
+        {%- for row in initialFrame.colorMatrix %}
           [ {% for colorValue in row %}{{ dictByColor[colorValue] }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
         {%- endfor %}
       ]
     };
+  {%- endfor %}
+
+  Object.entries(sprites).forEach(([slugSprite, sprite]) => {
 
     sprite.initialFrame.matrix.forEach((row, y) => {
 
@@ -83,7 +99,7 @@
       svgChildren.push(rowElem);
     });
 
-  {%- endfor %}
+  });
 
   // Append svg’s children elements.
   svgChildren.forEach(child => {

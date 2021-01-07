@@ -1,7 +1,5 @@
 const globalHelpers = require('../../globalHelpers.js');
 
-console.log(global);
-
 module.exports = {
   mapUniqueSceneColors(scene, keyPrefix = 'c') {
 
@@ -21,7 +19,7 @@ module.exports = {
         let uniqueColorsFrame = [];
 
         // Find the unique colors of each row of pixels in the frame.
-        frame.matrix.forEach(row => {
+        frame.colorMatrix.forEach(row => {
           uniqueColorsFrame = [...new Set(uniqueColorsFrame.concat(row))];
         });
         uniqueColorsSprite = [...new Set(uniqueColorsSprite.concat(uniqueColorsFrame))];
@@ -42,5 +40,22 @@ module.exports = {
     });
 
     return [ dictByToken, dictByColor ];
+  },
+
+  getSpriteMatrices(sprite) {
+
+    // Get each sprite in scene
+
+
+      // Get each frame in sprite
+
+      // Determine which pixels:
+      // - Are always transparent
+         // These will be `_` (padded to )
+      // - Are always solid-colored
+         // These will be `s`
+      // - Change color
+
+    return null;
   }
 };

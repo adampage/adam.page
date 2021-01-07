@@ -1,0 +1,8 @@
+name: Sunglasses
+initialFrame: shimmer06
+size:
+  width: 30
+  height: 6
+origin:
+  x: 1
+  y: 15
