@@ -1,4 +1,7 @@
-{% set scene = artwork.pixelScenes.myFace %}
+{% set scene = artwork.pixelScenes.scenes.myFace %}
+{% set maps = artwork.pixelScenes.helpers.mapUniqueSceneColors(scene) %}
+{% set dictByToken = maps[0] %}
+{% set dictByColor = maps[1] %}
 {% set pixelSize = scene.info.pixelSize %}
 {% set width = scene.info.stage.width * pixelSize %}
 {% set height = scene.info.stage.height * pixelSize %}
@@ -13,6 +16,10 @@
 </figure>
 
 <script>
+  {% for token, colorValue in dictByToken %}
+    const {{ token }} = "{{ colorValue }}";
+  {%- endfor %}
+
   const xmlns = 'http://www.w3.org/2000/svg';
   const pixelScene = document.querySelector('.pixel-scene');
   const pSize = {{ pixelSize }};
@@ -37,10 +44,17 @@
     {% set initialFrame = sprite.frames[sprite.info.initialFrame] %}
 
     sprite.info = {{ sprite.info | dump | safe }};
-    sprite.initialFrame = {{ initialFrame | dump | safe }};
 
     // TODO: non-opaque, non-animating pixels should be converted to null in
     // matrix and forego <rect> generation.
+    sprite.initialFrame = {
+      "name": "{{ initialFrame.name }}",
+      "matrix": [
+        {%- for row in initialFrame.matrix %}
+          [ {% for colorValue in row %}{{ dictByColor[colorValue] }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      ]
+    };
 
     sprite.initialFrame.matrix.forEach((row, y) => {
 
@@ -48,7 +62,7 @@
       let rowElem = document.createElementNS(xmlns, "g");
       rowElem.classList.add('row');
 
-      row.forEach((color, x) => {
+      row.forEach((token, x) => {
 
         // Calculate pixel’s position on the scene stage.
         let pX = (x + sprite.info.origin.x) * pSize;
@@ -56,7 +70,7 @@
 
         // Create a rect element to represent a colored sprite pixel.
         let p = document.createElementNS(xmlns, "rect");
-        p.setAttributeNS(null, 'fill', color);
+        p.setAttributeNS(null, 'fill', token);
         p.setAttributeNS(null, 'x', pX);
         p.setAttributeNS(null, 'y', pY);
         p.setAttributeNS(null, 'width', pSize);
@@ -64,7 +78,6 @@
 
         // Add this pixel to the row.
         rowElem.appendChild(p);
-
       });
 
       // Add row to svg children elements.
