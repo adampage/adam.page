@@ -1,0 +1,26 @@
+---
+permalink: 'dist/assets/stylesheets/pixel-scene-sprites.css'
+permalinkBypassOutputDir: true
+---
+{% set scene = artwork.pixelScenes.scenes[site.defaults.pixelScene] %}
+{% set sceneSpec = artwork.pixelScenes.helpers.getSceneSpec(scene) %}
+
+{%- for spriteSpec in sceneSpec.spriteSpecs %}
+  {%- set sprite = scene.sprites[spriteSpec.slug] %}
+  {%- set animation = sprite.info.animation %}
+  {%- if animation.keyframes %}
+
+
+    {% for colorSequence in spriteSpec.uniqueColorSequences -%}
+      @keyframes {{ spriteSpec.classPrefix }}{{ loop.index0 }} {
+        {% for keyframe in animation.keyframes %}
+          {{ keyframe.offset }} { fill: {{ colorSequence[loop.index0] }}; }
+        {%- endfor %}
+      }
+      rect.{{ spriteSpec.classPrefix }}{{ loop.index0 }} {
+        animation: {{ spriteSpec.classPrefix }}{{ loop.index0 }} {{animation.duration}} {{animation.timingFunction}} {{animation.delay}} {{animation.iterationCount}};
+      }
+    {%- endfor -%}
+  {%- endif -%}
+{%- endfor -%}
+

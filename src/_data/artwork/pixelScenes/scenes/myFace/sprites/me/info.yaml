@@ -4,17 +4,14 @@ origin:
   x: 1
   y: 0
 animation:
-  delay: 0s
-  duration: 2s
-  iterationCount: infinite
+  duration: 5s
   timingFunction: step-start
+  delay: 0s
+  iterationCount: infinite
   keyframes:
     -
       frame: eyesOpen
-      offset: 0%
+      offset: 98%
     -
       frame: eyesClosed
-      offset: 99%
-    -
-      frame: eyesOpen
       offset: 100%

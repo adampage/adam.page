@@ -1,4 +1,4 @@
-{% set scene = artwork.pixelScenes.scenes.myFace %}
+{% set scene = artwork.pixelScenes.scenes[site.defaults.pixelScene] %}
 {% set sceneSpec = artwork.pixelScenes.helpers.getSceneSpec(scene) %}
 {% set colorsByToken = sceneSpec.colorsByToken %}
 {% set tokensByColor = sceneSpec.tokensByColor %}
@@ -13,17 +13,21 @@
   <noscript>
     {# <!-- TODO: Serve pixel scene as static svg via img element. --> #}
   </noscript>
+
+  {# <!-- TODO: Add pause, resume, kill capabilities --> #}
 </figure>
 
 <script>
 
-  const {% for token, colorValue in colorsByToken %}
-    {{ token }}="{{ colorValue }}"{% if not loop.last %},{% endif %}
-  {%- endfor -%};
   const xmlns = 'http://www.w3.org/2000/svg';
   const pixelScene = document.querySelector('.pixel-scene');
   const pSize = {{ pixelSize }};
   const reTokenEmpty = new RegExp('{{ sceneSpec.charEmpty }}', "g");
+
+  // Unique color variables.
+  const {% for token, colorValue in colorsByToken %}
+    {{ token }}="{{ colorValue }}"{% if not loop.last %},{% endif %}
+  {%- endfor -%};
 
   // Create svg element.
   let svgElem = document.createElementNS(xmlns, "svg");
@@ -53,11 +57,17 @@
           'y': {{ sprite.info.origin.y }}
         }
       },
-      "rectMatrix": [
+      'rectMatrix': [
         {%- for row in spriteSpec.rectMatrix %}
           [ {% for pixelToken in row %}{{ pixelToken }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
         {%- endfor %}
       ],
+      'classPrefix': '{{ spriteSpec.classPrefix }}',
+      'animatedPixels': {
+        {%- for pixelSlug, sequenceIndex in spriteSpec.animatedPixels -%}
+          '{{ pixelSlug }}': {{ sequenceIndex}}{% if not loop.last %},{% endif %}
+        {%- endfor %}
+      }
     }
   {%- endfor %}
 
@@ -87,8 +97,16 @@
           p.setAttributeNS(null, 'width', pSize);
           p.setAttributeNS(null, 'height', pSize);
 
-          // TODO: If this pixel animates, give it a class corresponding to its
+          // If this pixel animates, give it a class corresponding to its
           // color sequence.
+          const pixelSlug = `${x},${y}`;
+          console.log(sprite.animatedPixels);
+          if (sprite.animatedPixels.hasOwnProperty(pixelSlug)) {
+            sequenceIndex = sprite.animatedPixels[pixelSlug];
+            className = sprite.classPrefix + sprite.animatedPixels[pixelSlug];
+
+            p.setAttribute('class', className);
+          }
 
           // Add this pixel to the row.
           rowElem.appendChild(p);

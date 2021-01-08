@@ -64,8 +64,7 @@ module.exports = {
     // animation will have its own token to induce <rect> production.
     sceneSpec.colorsByToken[tokenTransparentAnimated] = hexColorTransparent;
 
-    // Create sprite matrices
-
+    // Create each sprite’s rect matrices.
     sceneSpec.spriteSpecs.forEach((spriteSpec, index) => {
 
       const spriteIsAnimated = spriteSpec.animatedPixels.length > 0;
@@ -83,14 +82,9 @@ module.exports = {
         row.forEach((pixel, x) => {
 
           // pixelTokens must resemble one of:
-          // If sprite is animated:
-          //     _______ = Always transparent
-          //     cXX,000 = Always solid color (cNN = unique color value token)
-          //     cXX,aYY = Animated (aNN = unique color sequence class token)
-          // If sprite is not animated:
           //     ___ = Transparent to start, remains transparent (avoid rect)
-          //     _—_ = Transparent to start, but animates (needs rect)
-          //     cXX = Always solid color (needss rect)
+          //     __x = Transparent to start, but animates (needs rect)
+          //     cNN = Always solid color (needs rect)
 
           let tokenPixel = '';
 
@@ -105,29 +99,6 @@ module.exports = {
           } else {
             tokenPixel = sceneSpec.tokensByColor[pixel.colorInitial];
           }
-
-          // If this sprite is animated, we’ll need the two-part pixel token.
-          // if (spriteIsAnimated) {
-
-          //   // Add separator, if sprite is animated.
-          //   if (!pixel.isAnimated && pixel.colorInitial === hexColorTransparent) {
-          //     tokenPixel += sceneSpec.charEmpty;
-          //   } else {
-          //     tokenPixel += sceneSpec.charAnimationDelimiter;
-          //   }
-
-          //   if (!pixel.isAnimated) {
-          //     if (pixel.colorInitial === hexColorTransparent) {
-          //       tokenPixel += tokenStaticTransparentPixel;
-          //     } else {
-          //       tokenPixel += tokenStaticColoredPixel;
-          //     }
-          //   } else {
-          //     const index = pixel.colorSequenceIndex;
-          //     tokenPixel += sceneSpec.charAnimationPrefix;
-          //     tokenPixel += globalHelpers.padLeadingZeros(index, digitsColorSequences);
-          //   }
-          // }
 
           // If the token is populated only with the empty character, then
           // no <rect> element will need to be generated on the client.
@@ -148,7 +119,6 @@ module.exports = {
     return sceneSpec;
   },
 
-
   getSpriteSpec(sprite, slugSprite) {
 
     let spriteSpec = {
@@ -156,8 +126,9 @@ module.exports = {
       name: sprite.info.name,
       uniqueColors: [],
       uniqueColorSequences: [],
-      animatedPixels: [],
       pixelMatrix: [],
+      animatedPixels:{},
+      classPrefix: `${slugSprite}-`
     };
 
     let involvedMatrices = {};
@@ -247,10 +218,12 @@ module.exports = {
             }
 
             pixel.colorSequenceIndex = sequenceIndex;
-
-            spriteSpec.animatedPixels.push(pixel);
+            const pixelSlug = `${x},${y}`;
+            spriteSpec.animatedPixels[pixelSlug] = sequenceIndex;
           }
         }
+
+        // console.log(spriteSpec.uniqueColorSequences);
 
         // Push this pixel into the sprite spec’s matrix.
         spriteSpec.pixelMatrix[y].push(pixel);
