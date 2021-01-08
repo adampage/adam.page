@@ -1,5 +1,6 @@
 {% if pageStylesheets %}
   {% for item in pageStylesheets %}
     <link rel="stylesheet" media="print" href="{{ item }}?{{ assetHash }}" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="{{ item }}?{{ assetHash }}" /></noscript>
   {% endfor %}
 {% endif %}
