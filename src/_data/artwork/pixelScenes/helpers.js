@@ -232,7 +232,7 @@ module.exports = {
     // Collapse all collected colors into a unique set for this sprite.
     spriteSpec.uniqueColors = [...new Set(spriteColors)];
 
-    console.log(`🎦 Sprite spec: ${sprite.info.name} — ${numPixels} pixels, ${spriteSpec.uniqueColors.length} colors.  ${spriteSpec.animatedPixels.length} animated, ${spriteSpec.uniqueColorSequences.length} unique sequences.`);
+    console.log(`🎦 Sprite spec: ${sprite.info.name} — ${numPixels} pixels, ${spriteSpec.uniqueColors.length} colors.  ${Object.keys(spriteSpec.animatedPixels).length} animated, ${spriteSpec.uniqueColorSequences.length} unique sequences.`);
 
     return spriteSpec;
   }
