@@ -223,8 +223,6 @@ module.exports = {
           }
         }
 
-        // console.log(spriteSpec.uniqueColorSequences);
-
         // Push this pixel into the sprite spec’s matrix.
         spriteSpec.pixelMatrix[y].push(pixel);
         numPixels++;

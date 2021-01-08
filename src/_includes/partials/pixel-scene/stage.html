@@ -100,7 +100,6 @@
           // If this pixel animates, give it a class corresponding to its
           // color sequence.
           const pixelSlug = `${x},${y}`;
-          console.log(sprite.animatedPixels);
           if (sprite.animatedPixels.hasOwnProperty(pixelSlug)) {
             sequenceIndex = sprite.animatedPixels[pixelSlug];
             className = sprite.classPrefix + sprite.animatedPixels[pixelSlug];
