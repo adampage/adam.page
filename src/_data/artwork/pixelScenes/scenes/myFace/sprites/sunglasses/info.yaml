@@ -1,5 +1,50 @@
 name: Sunglasses
-initialFrame: shimmer06
+initialFrame: default
 origin:
   x: 1
-  y: 15
+  y: 14
+animation:
+  duration: 5s
+  timingFunction: ease
+  delay: 0s
+  iterationCount: infinite
+  keyframes:
+    -
+      frame: default
+      offset: 88%
+    -
+      frame: shimmer01
+      offset: 89%
+    -
+      frame: shimmer02
+      offset: 90%
+    -
+      frame: shimmer03
+      offset: 91%
+    -
+      frame: shimmer04
+      offset: 92%
+    -
+      frame: shimmer05
+      offset: 93%
+    -
+      frame: shimmer06
+      offset: 94%
+    -
+      frame: shimmer07
+      offset: 95%
+    -
+      frame: shimmer08
+      offset: 96%
+    -
+      frame: shimmer09
+      offset: 97%
+    -
+      frame: shimmer10
+      offset: 98%
+    -
+      frame: shimmer11
+      offset: 99%
+    -
+      frame: shimmer12
+      offset: 100%
