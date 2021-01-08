@@ -1,8 +1,20 @@
 name: My face
 initialFrame: eyesOpen
-size:
-  width: 30
-  height: 39
 origin:
   x: 1
   y: 0
+animation:
+  delay: 0s
+  duration: 2s
+  iterationCount: infinite
+  timingFunction: step-start
+  keyframes:
+    -
+      frame: eyesOpen
+      offset: 0%
+    -
+      frame: eyesClosed
+      offset: 99%
+    -
+      frame: eyesOpen
+      offset: 100%

@@ -1,8 +1,7 @@
 {% set scene = artwork.pixelScenes.scenes.myFace %}
-{% set maps = artwork.pixelScenes.helpers.mapUniqueSceneColors(scene) %}
-{# {% set spriteMatrices = artwork.pixelScenes.helpers.getSpriteMatrices(scene) %} #}
-{% set dictByToken = maps[0] %}
-{% set dictByColor = maps[1] %}
+{% set sceneSpec = artwork.pixelScenes.helpers.getSceneSpec(scene) %}
+{% set colorsByToken = sceneSpec.colorsByToken %}
+{% set tokensByColor = sceneSpec.tokensByColor %}
 {% set pixelSize = scene.info.pixelSize %}
 {% set width = scene.info.stage.width * pixelSize %}
 {% set height = scene.info.stage.height * pixelSize %}
@@ -17,12 +16,14 @@
 </figure>
 
 <script>
-  const {% for token, colorValue in dictByToken %}
+
+  const {% for token, colorValue in colorsByToken %}
     {{ token }}="{{ colorValue }}"{% if not loop.last %},{% endif %}
   {%- endfor -%};
   const xmlns = 'http://www.w3.org/2000/svg';
   const pixelScene = document.querySelector('.pixel-scene');
   const pSize = {{ pixelSize }};
+  const reTokenEmpty = new RegExp('{{ sceneSpec.charEmpty }}', "g");
 
   // Create svg element.
   let svgElem = document.createElementNS(xmlns, "svg");
@@ -41,64 +42,65 @@
   let sprites = {};
 
   // Collect sprite data.
-  {%- for slugSprite, sprite in scene.sprites -%}
+  {%- for spriteSpec in sceneSpec.spriteSpecs -%}
 
-    {% set initialFrame = sprite.frames[sprite.info.initialFrame] %}
+    {% set sprite = scene.sprites[spriteSpec.slug] %}
 
-    sprites['{{slugSprite}}'] = {};
-
-    sprites['{{slugSprite}}'].info = {{ sprite.info | dump | safe }};
-
-
-    // TODO: non-opaque, non-animating pixels should be converted to null in
-    // matrix and forego <rect> generation.
-    sprites['{{slugSprite}}'].initialFrame = {
-      "name": "{{ initialFrame.name }}",
-
-      // "spriteMatrix": [
-      //   {%- for row in spriteMatrix %}
-      //     [ {% for pixelToken in row %}{{ pixelToken }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
-      //   {%- endfor %}
-      // ]
-
-      "matrix": [
-        {%- for row in initialFrame.colorMatrix %}
-          [ {% for colorValue in row %}{{ dictByColor[colorValue] }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
+    sprites['{{ spriteSpec.slug }}'] = {
+      'info': {
+        'origin': {
+          'x': {{ sprite.info.origin.x }},
+          'y': {{ sprite.info.origin.y }}
+        }
+      },
+      "rectMatrix": [
+        {%- for row in spriteSpec.rectMatrix %}
+          [ {% for pixelToken in row %}{{ pixelToken }}{% if not loop.last %},{% endif %}{% endfor %} ]{% if not loop.last %},{% endif %}
         {%- endfor %}
-      ]
-    };
+      ],
+    }
   {%- endfor %}
 
   Object.entries(sprites).forEach(([slugSprite, sprite]) => {
 
-    sprite.initialFrame.matrix.forEach((row, y) => {
+    sprite.rectMatrix.forEach((row, y) => {
 
       // Create an svg group element to contain a row of sprite pixels.
       let rowElem = document.createElementNS(xmlns, "g");
       rowElem.classList.add('row');
 
-      row.forEach((token, x) => {
+      row.forEach((colorVar, x) => {
 
-        // Calculate pixel’s position on the scene stage.
-        let pX = (x + sprite.info.origin.x) * pSize;
-        let pY = (y + sprite.info.origin.y) * pSize;
+        // Only create a rect if the pixel is colored (or will become colored
+        // through animation).
+        if (colorVar.length) {
 
-        // Create a rect element to represent a colored sprite pixel.
-        let p = document.createElementNS(xmlns, "rect");
-        p.setAttributeNS(null, 'fill', token);
-        p.setAttributeNS(null, 'x', pX);
-        p.setAttributeNS(null, 'y', pY);
-        p.setAttributeNS(null, 'width', pSize);
-        p.setAttributeNS(null, 'height', pSize);
+          // Calculate pixel’s position on the scene stage.
+          let pX = (x + sprite.info.origin.x) * pSize;
+          let pY = (y + sprite.info.origin.y) * pSize;
 
-        // Add this pixel to the row.
-        rowElem.appendChild(p);
+          // Create a rect element to represent a colored sprite pixel.
+          let p = document.createElementNS(xmlns, "rect");
+          p.setAttributeNS(null, 'fill', colorVar);
+          p.setAttributeNS(null, 'x', pX);
+          p.setAttributeNS(null, 'y', pY);
+          p.setAttributeNS(null, 'width', pSize);
+          p.setAttributeNS(null, 'height', pSize);
+
+          // TODO: If this pixel animates, give it a class corresponding to its
+          // color sequence.
+
+          // Add this pixel to the row.
+          rowElem.appendChild(p);
+        }
       });
 
-      // Add row to svg children elements.
-      svgChildren.push(rowElem);
+      // Only push the row element if it contains children.
+      if (rowElem.hasChildNodes()) {
+        // Add row to svg children elements.
+        svgChildren.push(rowElem);
+      }
     });
-
   });
 
   // Append svg’s children elements.
