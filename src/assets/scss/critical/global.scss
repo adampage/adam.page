@@ -7,11 +7,34 @@
 @import '../utilities/wrapper';
 @import '../utilities/when-js';
 
+:root {
+  --color: #{string.unquote(map-get($tokens, 'colors', 'charcoal'))};
+  --color-background: #{string.unquote(map-get($tokens, 'colors', 'porcelain'))};
+  --color-text-link: #{string.unquote(map-get($tokens, 'colors', 'mineral'))};;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color: #{string.unquote(map-get($tokens, 'colors', 'porcelain'))};
+    --color-background: #{string.unquote(map-get($tokens, 'colors', 'charcoal'))};
+    --color-text-link: #{string.unquote(map-get($tokens, 'colors', 'lightgreen'))};;
+  }
+}
+
 body {
   font-family: string.unquote(map-get($tokens, 'fonts', 'base'));
   font-size: 1.25rem;
   line-height: 1.5;
-  background-color: string.unquote(map-get($tokens, 'colors', 'background'));
+  background-color: var(--color-background);
+  color: var(--color);
+}
+
+a {
+  color: var(--color-text-link);
+
+  &:visited {
+    color: inherit;
+  }
 }
 
 main {
