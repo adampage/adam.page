@@ -12,7 +12,7 @@ animation:
   keyframes:
     -
       frame: eyesOpen
-      offset: 99%
+      offset: 98%
     -
       frame: eyesClosed
       offset: 100%
