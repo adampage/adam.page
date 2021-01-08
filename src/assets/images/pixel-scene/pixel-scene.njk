@@ -1,0 +1,29 @@
+---
+permalink: 'dist/assets/images/svg/pixel-scene.svg'
+permalinkBypassOutputDir: true
+---
+{%- set scene = artwork.pixelScenes.scenes[site.defaults.pixelScene] -%}
+{%- set pixelSize = scene.info.pixelSize -%}
+{%- set widthStage = scene.info.stage.width * pixelSize -%}
+{%- set heightStage = scene.info.stage.height * pixelSize -%}
+<svg width="{{ widthStage }}" height="{{ heightStage }}" viewbox="0 0 {{ widthStage }} {{ heightStage }}" shape-rendering="crispEdges" xmlns="http://www.w3.org/2000/svg">
+  {%- for spriteSlug in scene.info.orderedSprites -%}
+  <g class="sprite {{ spriteSlug }}">
+      {%- set sprite = scene.sprites[spriteSlug] -%}
+      {%- set frame = sprite.frames[sprite.info.staticFrame] -%}
+      {%- for row in frame.colorMatrix -%}
+        {%- set y = loop.index0 -%}
+    <g class="row">
+          {%- for color in row -%}
+            {%- set x = loop.index0 -%}
+            {%- if color != '#FFFFFF00' -%}
+              {%- set pX = (x + sprite.info.origin.x) * pixelSize -%}
+              {%- set pY = (y + sprite.info.origin.y) * pixelSize -%}
+      <rect fill="{{ color }}" x="{{ pX }}" y="{{ pY }}" width="{{ pixelSize }}" height="{{ pixelSize }}" />
+            {%- endif -%}
+          {%- endfor -%}
+    </g>
+      {%- endfor -%}
+  </g>
+  {%- endfor -%}
+</svg>

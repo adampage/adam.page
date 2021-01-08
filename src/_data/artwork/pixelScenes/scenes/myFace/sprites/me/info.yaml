@@ -1,5 +1,6 @@
 name: My face
 initialFrame: eyesOpen
+staticFrame: eyesOpen
 origin:
   x: 1
   y: 0

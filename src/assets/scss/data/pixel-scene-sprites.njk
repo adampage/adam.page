@@ -16,9 +16,9 @@ rect[class^="{{ spriteSpec.classPrefix }}"] {
 }
     {%- for colorSequence in spriteSpec.uniqueColorSequences %}
 @keyframes {{ spriteSpec.classPrefix }}{{ loop.index0 }} {
-  {%- for keyframe in animation.keyframes %}
+      {%- for keyframe in animation.keyframes %}
   {{ keyframe.offset }} { fill: {{ colorSequence[loop.index0] }}; }
-  {%- endfor -%}
+      {%- endfor -%}
 }
 rect.{{ spriteSpec.classPrefix }}{{ loop.index0 }} { animation-name: {{ spriteSpec.classPrefix }}{{ loop.index0 }}; }
     {%- endfor -%}

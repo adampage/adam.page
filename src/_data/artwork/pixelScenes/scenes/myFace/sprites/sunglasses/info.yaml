@@ -1,5 +1,6 @@
 name: Sunglasses
 initialFrame: default
+staticFrame: shimmer08
 origin:
   x: 1
   y: 14

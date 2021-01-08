@@ -6,21 +6,19 @@
 {% set width = scene.info.stage.width * pixelSize %}
 {% set height = scene.info.stage.height * pixelSize %}
 
-{# <!-- TODO: Generate initial frame as static SVG and pass to dist. --> #}
-{# <!-- TODO: Or commit all frames as static SVGs and generate matrices? --> #}
-
-<figure class="[ pixel-scene ] [ when-js ]">
+<figure class="[ pixel-scene ]">
   <noscript>
-    {# <!-- TODO: Serve pixel scene as static svg via img element. --> #}
+    <img src="/assets/images/svg/pixel-scene.svg?{{ assetHash }}" alt="{{ scene.info.name }}" width="{{ width }}" height="{{ height }}" />
   </noscript>
-
-  {# <!-- TODO: Add pause, resume, kill capabilities --> #}
+  <div class="[ pixel-scene__dynamic ] [ when-js ]">
+    {# <!-- TODO: Add pause, resume, kill capabilities --> #}
+  </div>
 </figure>
 
 <script>
 
   const xmlns = 'http://www.w3.org/2000/svg';
-  const pixelScene = document.querySelector('.pixel-scene');
+  const pixelScene = document.querySelector('.pixel-scene__dynamic');
   const pSize = {{ pixelSize }};
   const reTokenEmpty = new RegExp('{{ sceneSpec.charEmpty }}', "g");
 
