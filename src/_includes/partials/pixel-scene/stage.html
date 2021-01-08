@@ -16,7 +16,6 @@
 </figure>
 
 <script>
-
   const xmlns = 'http://www.w3.org/2000/svg';
   const pixelScene = document.querySelector('.pixel-scene__dynamic');
   const pSize = {{ pixelSize }};
@@ -38,7 +37,7 @@
   // Create svg’s title element.
   let titleElem = document.createElementNS(xmlns, "title");
   titleElem.textContent = '{{ scene.info.name }}';
-  svgChildren.push(titleElem);
+  svgElem.appendChild(titleElem);
 
   // Create empty dictionary for sprites
   let sprites = {};
@@ -70,6 +69,10 @@
   {%- endfor %}
 
   Object.entries(sprites).forEach(([slugSprite, sprite]) => {
+
+    // Create an svg group element to contain a sprite.
+    let spriteElem = document.createElementNS(xmlns, "g");
+    spriteElem.setAttribute('class', `sprite ${slugSprite}`);
 
     sprite.rectMatrix.forEach((row, y) => {
 
@@ -110,20 +113,18 @@
         }
       });
 
-      // Only push the row element if it contains children.
+      // Only append the row to the sprite group if it contains children.
       if (rowElem.hasChildNodes()) {
-        // Add row to svg children elements.
-        svgChildren.push(rowElem);
+        spriteElem.appendChild(rowElem);
       }
     });
-  });
 
-  // Append svg’s children elements.
-  svgChildren.forEach(child => {
-    svgElem.appendChild(child);
+    // Only append the sprite group to the SVG if it has children.
+    if (spriteElem.hasChildNodes()) {
+      svgElem.appendChild(spriteElem);
+    }
   });
 
   // Append svg to pixel scene parent element.
-  pixelScene.append(svgElem);
-
+  pixelScene.appendChild(svgElem);
 </script>
