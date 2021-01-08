@@ -7,3 +7,9 @@
     }
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  .pixel-scene g.sunglasses {
+    display: none;
+  }
+}
