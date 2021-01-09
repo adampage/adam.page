@@ -2,4 +2,11 @@
   svg {
     display: block;
   }
+
+  @media (min-width: 40rem) {
+    float: left;
+    margin-top: -1em;
+    margin-right: 2em;
+    margin-bottom: 2em;
+  }
 }
